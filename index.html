@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Brain Atlas</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#f6f4ef;--card:#fffdf8;--ink:#1d1b17;--mute:#6f695e;--line:#e4dfd3;--ok:#2f7d4f;--mid:#b07a12;--no:#a8432f;--accent:#3b5bdb}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15140f;--card:#1f1d17;--ink:#ece7da;--mute:#a39c8c;--line:#34312a;--ok:#5fbf86;--mid:#e0b04a;--no:#e07a64;--accent:#8ea2ff}}
+:root[data-theme="dark"]{--bg:#15140f;--card:#1f1d17;--ink:#ece7da;--mute:#a39c8c;--line:#34312a;--ok:#5fbf86;--mid:#e0b04a;--no:#e07a64;--accent:#8ea2ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 48px}h1{font-size:22px;margin:0 0 4px}.mute{color:var(--mute);font-size:14px}
+.bar{height:10px;border-radius:6px;background:var(--line);overflow:hidden;margin:12px 0 4px}.bar i{display:block;height:100%;background:var(--ok)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0}
+.card h2{font-size:17px;margin:2px 0 6px}.tag{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
+.lock{color:var(--mute);font-size:14px;border-top:1px dashed var(--line);margin-top:10px;padding-top:8px}
+details{border-top:1px solid var(--line);margin-top:10px;padding-top:8px}summary{cursor:pointer;font-weight:600}
+.s{font-weight:700}.s.g{color:var(--ok)}.s.p{color:var(--mid)}.s.n{color:var(--no)}
+.future{opacity:.55}.mine{border-left:3px solid var(--accent);padding-left:10px;margin:8px 0}
+input,button{font:inherit;padding:12px;border-radius:10px;border:1px solid var(--line);width:100%;background:var(--card);color:var(--ink)}
+button{background:var(--accent);color:#fff;border:0;margin-top:8px}#err{color:var(--no)}
+</style></head><body><main id="app">
+<h1>Brain Atlas</h1><p class="mute">Locked. Open it from the bot's menu button, or paste the password from /site.</p>
+<input id="pw" type="password" placeholder="Password" autocomplete="current-password"><button id="go">Open</button><p id="err"></p>
+</main>
+<script>
+const SEALED="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",ITER=250000,KEY="atlas_pw",$=s=>document.querySelector(s);
+const esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const score=s=>s?`<span class="s ${s.startsWith("Got")?"g":s.startsWith("Part")?"p":"n"}">${esc(s)}</span>`:"";
+try{Telegram.WebApp.ready();Telegram.WebApp.expand();document.documentElement.dataset.theme=Telegram.WebApp.colorScheme}catch{}
+async function unseal(pw){const raw=Uint8Array.from(atob(SEALED),c=>c.charCodeAt(0));
+ const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);
+ const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:raw.slice(0,16),iterations:ITER,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["decrypt"]);
+ return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:raw.slice(16,28)},key,raw.slice(28))));}
+function render(d){const pct=Math.round(100*d.answered/d.of);
+ let h=`<h1>Brain Atlas</h1><p class="mute">Day ${d.today} of ${d.of} · updated ${esc(d.stamp)}</p>
+ <div class="bar"><i style="width:${pct}%"></i></div><p class="mute">Answered on <b>${d.answered}/${d.of}</b> days · check on ${esc(d.gate)} needs ${d.pass}</p>`;
+ for(const c of d.days){
+  if(c.state==="future"){h+=`<div class="card future"><span class="tag">Day ${c.day}</span><h2>Unlocks ${esc(c.unlock)}</h2></div>`;continue}
+  h+=`<div class="card"><span class="tag">Day ${c.day} · ${esc(c.layer)}</span><h2>${esc(c.concept)}</h2><p>${esc(c.plain)}</p><p class="mute">${esc(c.analogy)}</p>`;
+  if(c.state==="open")h+=`<p class="lock">🔒 Answer today's question in the bot to unlock the real story.</p>`;
+  else{h+=`<details open><summary>Your answer ${score(c.score)}</summary><p class="mine">${esc(c.mine)}</p><p><b>Model answer:</b> ${esc(c.model)}</p></details>
+   <details><summary>The real story</summary><p>${esc(c.story)}</p><p class="mute">Source: ${esc(c.source)}</p></details>`;
+   if(c.duel)h+=`<details><summary>Taste duel ${score(c.duel.score)}</summary><p>${esc(c.duel.q)}</p><p>A) ${esc(c.duel.a)}<br>B) ${esc(c.duel.b)}</p><p><b>Best: ${esc(c.duel.best.toUpperCase())}.</b> ${esc(c.duel.why)}</p></details>`;
+   if(c.task)h+=`<details><summary>Task ${score(c.task.score)}</summary><p>${esc(c.task.t)}</p><p class="mute">${esc(c.task.transfer)}</p></details>`;}
+  h+=`</div>`}
+ h+=`<h1 style="margin-top:28px">Brain dumps</h1>`+(d.dumps.length?d.dumps.map(x=>`<div class="card"><span class="tag">${esc(x.date)}</span><p>${esc(x.text)}</p><p class="mute">${esc(x.verdict)}</p></div>`).join(""):`<p class="mute">None yet. Start a bot message with "idea".</p>`);
+ $("#app").innerHTML=h;}
+async function open(pw,quiet){try{render(await unseal(pw));try{localStorage.setItem(KEY,pw)}catch{}}
+ catch{if(!quiet)$("#err").textContent="That password didn't open it.";try{localStorage.removeItem(KEY)}catch{}}}
+$("#go").onclick=()=>open($("#pw").value,false);
+const k=(location.hash.match(/[#&]k=([^&]+)/)||[])[1];
+if(k){history.replaceState(null,"",location.pathname);open(decodeURIComponent(k),false)}
+else{try{const s=localStorage.getItem(KEY);if(s)open(s,true)}catch{}}
+</script></body></html>
